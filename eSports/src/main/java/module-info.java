@@ -4,6 +4,8 @@ module cl.duoc.esports {
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
+    requires java.sql;
+    requires mysql.connector.j;
 
     opens cl.duoc.esports to javafx.fxml;
     exports cl.duoc.esports;
