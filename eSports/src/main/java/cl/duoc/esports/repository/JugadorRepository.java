@@ -39,8 +39,24 @@ public class JugadorRepository {
     }
 
     // Eliminar Jugador:}
-    public boolean eliminarJugador(){
+    public boolean eliminarJugador(Jugador j) throws SQLException {
         boolean eliminar = false;
+        try{
+            coneLocal = new Conexion().getCone();
+            String sql = "DELETE FROM jugador WHERE nickname = ?";
+            PreparedStatement ps = coneLocal.prepareStatement(sql);
+            ps.setString(1,j.getNickname());
+
+            int res = ps.executeUpdate();
+            if (res == 1) {
+                eliminar = true;
+            }
+
+        }catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }finally{
+            coneLocal.close();
+        }
         return eliminar;
     }
 

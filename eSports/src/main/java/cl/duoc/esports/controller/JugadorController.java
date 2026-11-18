@@ -52,8 +52,6 @@ public class JugadorController {
         });
     }
 
-    ArrayList<Jugador> jugadores = new ArrayList<>();
-
     @FXML
     protected void registrarJugador() {
         try {
@@ -99,11 +97,16 @@ public class JugadorController {
             if(j==null){
                 labelMensaje.setText("Debe seleccionar un jugador de la tabla.");
                 return;
+            }else{
+                boolean res = new JugadorRepository().eliminarJugador(j);
+                if(res){
+                    mostrarMensaje("Jugador eliminado");
+                    cargarTabla();
+                    limpiar();
+                }else{
+                    mostrarMensaje("Jugador no eliminado");
+                }
             }
-            jugadores.remove(j);
-            cargarTabla();
-            limpiar();
-            mostrarMensaje("Jugador eliminado.");
         }catch (Exception ex){
             labelMensaje.setText( ex.getMessage() );
         }
@@ -122,13 +125,18 @@ public class JugadorController {
     }
 
     private void cargarTabla(){
-        tableColumnNickname.setCellValueFactory(new PropertyValueFactory<>("nickname"));
-        tableColumnVideojuego.setCellValueFactory(new PropertyValueFactory<>("videojuego"));
-        tableColumnNivel.setCellValueFactory(new PropertyValueFactory<>("nivel"));
-        tableColumnPuntos.setCellValueFactory(new PropertyValueFactory<>("puntos"));
+        try{
+            tableColumnNickname.setCellValueFactory(new PropertyValueFactory<>("nickname"));
+            tableColumnVideojuego.setCellValueFactory(new PropertyValueFactory<>("videojuego"));
+            tableColumnNivel.setCellValueFactory(new PropertyValueFactory<>("nivel"));
+            tableColumnPuntos.setCellValueFactory(new PropertyValueFactory<>("puntos"));
 
-        ObservableList<Jugador> data = FXCollections.observableArrayList(jugadores);
-        tableViewJugadores.setItems(data);
+            ArrayList<Jugador> jugadores = new JugadorRepository().verJugadores();
+            ObservableList<Jugador> data = FXCollections.observableArrayList(jugadores);
+            tableViewJugadores.setItems(data);
+        }catch(Exception ex){
+            System.err.println(ex.getMessage());
+        }
     }
 
     private void mostrarMensaje(String mensaje){
