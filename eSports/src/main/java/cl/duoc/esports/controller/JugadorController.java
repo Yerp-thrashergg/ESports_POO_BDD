@@ -3,6 +3,7 @@ package cl.duoc.esports.controller;
 import cl.duoc.esports.model.Casual;
 import cl.duoc.esports.model.Competitivo;
 import cl.duoc.esports.model.Jugador;
+import cl.duoc.esports.repository.JugadorRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -76,10 +77,14 @@ public class JugadorController {
             }else{
                 j = new Competitivo(nickname,videojuego,nivel,cantVicPartJug);
             }
-            jugadores.add(j);
-            cargarTabla();
-            mostrarMensaje("Jugador agregado.");
-            limpiar();
+            boolean res = new JugadorRepository().agregarJugador(j);
+            if(res){
+                mostrarMensaje("Jugador registrado");
+                cargarTabla();
+                limpiar();
+            }else{
+                mostrarMensaje("Jugador no registrado");
+            }
         }catch (NumberFormatException ex){
             labelMensaje.setText("Debe ingresar números para campos numéricos.");
         }catch (Exception ex){
