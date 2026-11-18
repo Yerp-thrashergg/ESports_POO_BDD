@@ -36,6 +36,7 @@ public class JugadorController {
 
     @FXML
     public void initialize(){
+        cargarTabla();
         comboBoxVideojuego.getItems().addAll("Counter Strike", "Valorant", "Minecraft");
         comboBoxTipoJugador.getItems().addAll("Casual","Competitivo");
 
@@ -50,6 +51,7 @@ public class JugadorController {
                 textFieldCantVicPartJug.setPromptText("ingrese cantidad de victorias");
             }
         });
+
     }
 
     @FXML
